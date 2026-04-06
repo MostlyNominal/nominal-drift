@@ -1,0 +1,81 @@
+# =============================================================================
+# nominal-drift  —  .gitignore
+#
+# PRIVATE DATA ISOLATION POLICY
+# ==============================
+# The public repository contains only the generic application core.
+# All user-specific data lives in data/ and outputs/ which are NEVER
+# committed.  This separation is a hard architectural requirement — see
+# Section 18 of the Vision Architecture Document.
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# Private user data (MUST stay out of git)
+# ---------------------------------------------------------------------------
+data/
+outputs/
+
+# User-specific runtime configuration (copy from config.example.yaml)
+config.yaml
+
+# User-specific private scientific modules
+user_plugins/
+
+# ---------------------------------------------------------------------------
+# Python bytecode and packaging artefacts
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+
+# ---------------------------------------------------------------------------
+# Virtual environments
+# ---------------------------------------------------------------------------
+.venv/
+venv/
+env/
+ENV/
+
+# ---------------------------------------------------------------------------
+# Testing and coverage
+# ---------------------------------------------------------------------------
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# ---------------------------------------------------------------------------
+# Type-checking cache
+# ---------------------------------------------------------------------------
+.mypy_cache/
+.ruff_cache/
+
+# ---------------------------------------------------------------------------
+# Jupyter / notebook artefacts
+# ---------------------------------------------------------------------------
+.ipynb_checkpoints/
+*.ipynb
+
+# ---------------------------------------------------------------------------
+# OS and editor artefacts
+# ---------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ---------------------------------------------------------------------------
+# Secrets and credentials (belt-and-suspenders)
+# ---------------------------------------------------------------------------
+.env
+*.env
+secrets.yaml
+credentials.json
