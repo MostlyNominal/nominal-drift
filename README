@@ -2,20 +2,20 @@ Nominal Drift
 
 Where diffusion becomes discovery.
 
-Nominal Drift is a local scientific AI workstation for materials science, corrosion, diffusion physics, and crystal intelligence workflows.
+Nominal Drift is a local scientific AI workstation for materials science, corrosion, diffusion physics and crystal intelligence workflows.
 
 Built as a hybrid system, it combines:
 
 * LLM reasoning** for scientific dialogue and workflow orchestration
-* deterministic physics engines** for trusted calculations
-* mechanism-aware visualisation** for microstructure and diffusion behaviour
-* experiment memory + retrieval** for validation and comparison
-* future crystal / DFT dataset workflows** for structure-aware materials intelligence
+* deterministic physics engines for trusted calculations
+* mechanism-aware visualisation for microstructure and diffusion behaviour
+* experiment memory + retrieval for validation and comparison
+* future crystal / DFT dataset workflows for structure-aware materials intelligence
 
-This is not a generic chatbot.
+This is **not a generic chatbot**.
 
 The language model is the reasoning layer.
-The science lives in the tools.
+**The science lives in the tools.**
 
 Every numerical result is generated through explicit modules:
 
@@ -28,7 +28,7 @@ Every numerical result is generated through explicit modules:
 
 The goal is simple:
 
-ask scientific questions in natural language and receive physically grounded outputs.
+> Ask scientific questions in natural language and receive physically grounded outputs.
 
 From chromium depletion in stainless steels to future crystal diffusion and DFT-assisted workflows, Nominal Drift is being built as a local-first scientific copilot.
 
@@ -36,17 +36,145 @@ From chromium depletion in stainless steels to future crystal diffusion and DFT-
 
 Current Capabilities
 
+Materials & Corrosion Workflows
+
 * 1D Fick diffusion engine (Crank–Nicolson)
-* sensitization / depletion workflows
+* chromium / carbon / nitrogen diffusion workflows
+* sensitization and depletion studies
 * engineering narration via local LLM
 * static and animated visual outputs
 * experiment database
-* GUI + chat orchestration (in progress)
-* crystal dataset ingestion lane (Phase 2)
+* CLI and GUI orchestration (in progress)
+
+Crystal Intelligence Lane (Phase 2 / in progress)
+
+* MP-20
+* MPTS-52
+* Perov-5
+* Carbon-24
+* CIF-based public crystal repositories
+* normalization and indexing pipelines
+
+---
+
+Grounded In
+
+Nominal Drift is built on experimental diffusion data, classical transport theory and corrosion literature.
+
+The current diffusion engine uses literature-validated Arrhenius constants for substitutional and interstitial diffusion in Fe–Cr–Ni austenitic systems.
+
+Chromium diffusion (substitutional)
+
+Primary reference currently used:
+
+* Perkins, Padgett & Tunali (1973)
+  *Tracer diffusion of Fe and Cr in Fe-17 wt% Cr-12 wt% Ni austenitic alloy
+  *Metallurgical Transactions, 4(12), 2535–2540
+  DOI: 10.1007/BF02644258
+
+Canonical values used in the model:
+
+* D₀ = 3.6 × 10⁻⁴ m²/s**
+* Q = 272 kJ/mol**
+
+This remains the main diffusion reference for Cr transport in the 18-8 / 316L composition space.
+
+Carbon diffusion (interstitial)
+
+Current C diffusivity constants are built from:
+
+* Tibbetts (1980)
+* Goldschmidt (1967)
+* Smith (1990)
+
+These support sensitization and grain-boundary depletion workflows.
+
+Nitrogen diffusion
+
+Nitrogen diffusion constants currently reference:
+
+* Jack (1951)
+* Grabke (1996)
+* Frisk (1991)
+
+Used for future nitride-driven HT and corrosion workflows.
+
+Numerical foundation
+
+The transport solver is built on:
+
+* Fick’s Second Law
+* Arrhenius diffusion formalism
+* Crank–Nicolson finite difference method
+
+Validated against:
+
+* Crank, The Mathematics of Diffusion (1975)
+* Borg & Dienes (1988)
+
+This project is intentionally developed as a living scientific workspace —
+part validated physics, part evolving toolchain, part experimental notebook.
+
+---
+
+Architecture
+
+```text
+Llama / Ollama
+      ↓
+ Tool Router
+      ↓
+ Scientific Modules
+      ├── diffusion_engine
+      ├── visualization
+      ├── experiment_store
+      ├── datasets
+      └── reporting
+```
 
 ---
 
 Vision
 
-A local scientific operating system for materials discovery, failure analysis, and mechanism-driven engineering.
+A local scientific operating system for:
 
+* materials discovery
+* failure analysis
+* corrosion modelling
+* heat-treatment optimization
+* diffusion mechanism visualization
+* future DFT / crystal workflows
+
+The long-term vision is a system where you can ask:
+
+> Why did this alloy fail after this heat treatment?
+> How deep is chromium depletion after 700°C for 1 hour?
+> Can this crystal structure support fast diffusion pathways?
+
+and receive physically grounded answers.
+
+---
+
+## Status
+
+Active development — currently in validation sprint.
+
+Current focus:
+
+* workflow validation
+* model calibration
+* literature grounding
+* dataset integration
+* GUI / local launcher
+* DFT-ready crystal pipeline
+
+---
+
+Philosophy
+
+This is not about replacing scientific judgement.
+
+It is about building a system that helps us think faster, test ideas earlier, and validate mechanisms better.
+
+Mostly nominal.
+Until it drifts into discovery.
