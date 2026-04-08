@@ -1,1 +1,52 @@
+# Nominal Drift
+
+Where diffusion becomes discovery.
+
+Nominal Drift is a local scientific AI workstation for materials science, corrosion, diffusion physics, and crystal intelligence workflows.
+
+Built as a hybrid system, it combines:
+
+* **LLM reasoning** for scientific dialogue and workflow orchestration
+* **deterministic physics engines** for trusted calculations
+* **mechanism-aware visualisation** for microstructure and diffusion behaviour
+* **experiment memory + retrieval** for validation and comparison
+* **future crystal / DFT dataset workflows** for structure-aware materials intelligence
+
+This is not a generic chatbot.
+
+The language model is the reasoning layer.
+The science lives in the tools.
+
+Every numerical result is generated through explicit modules:
+
+* diffusion solvers
+* sensitization models
+* heat-treatment workflows
+* experiment databases
+* dataset pipelines
+* report generators
+
+The goal is simple:
+
+**ask scientific questions in natural language and receive physically grounded outputs.**
+
+From chromium depletion in stainless steels to future crystal diffusion and DFT-assisted workflows, Nominal Drift is being built as a local-first scientific copilot.
+
+---
+
+## Current Capabilities
+
+* 1D Fick diffusion engine (Crank–Nicolson)
+* sensitization / depletion workflows
+* engineering narration via local LLM
+* static and animated visual outputs
+* experiment database
+* GUI + chat orchestration (in progress)
+* crystal dataset ingestion lane (Phase 2)
+
+---
+
+## Vision
+
+A local scientific operating system for materials discovery, failure analysis, and mechanism-driven engineering.
 
