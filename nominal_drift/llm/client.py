@@ -133,7 +133,7 @@ class OllamaClient:
             resp.raise_for_status()
             data = resp.json()
             return [m["name"] for m in data.get("models", [])]
-        except Exception as exc:  # noqa: BLE001
+        except (requests.RequestException, ValueError) as exc:
             logger.warning("Could not retrieve model list: %s", exc)
             return []
 
