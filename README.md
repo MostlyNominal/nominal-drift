@@ -1,25 +1,25 @@
-Nominal Drift
+# Nominal Drift
 
-Where failed assumptions become working systems.
+**Where failed assumptions become working systems.**
 
-Nominal Drift is a **local-first scientific AI workstation for materials science, corrosion, diffusion physics, and crystal intelligence.
+Nominal Drift is a **local-first scientific AI workstation** for materials science, corrosion, diffusion physics, and crystal intelligence.
 
 It is being built as a hybrid system where:
 
-- LLM reasoning** drives scientific dialogue and workflow orchestration
-- deterministic physics engines generate trusted numerical results
-- mechanism-aware visualisation makes diffusion and microstructural evolution visible
-- experiment memory and retrieval preserve validation history
-- crystal / CIF / DFT-ready data lanes support structure-aware workflows
+- **LLM reasoning** drives scientific dialogue and workflow orchestration
+- **deterministic physics engines** generate trusted numerical results
+- **mechanism-aware visualisation** makes diffusion and microstructural evolution visible
+- **experiment memory and retrieval** preserve validation history
+- **crystal / CIF / DFT-ready data lanes** support structure-aware workflows
 
-This is not a generic chatbot.
+This is **not a generic chatbot**.
 
 The model reasons.  
-The science lives in the tools.
+**The science lives in the tools.**
 
 ---
 
-What it does
+## What it does
 
 Every numerical result is produced through explicit scientific modules:
 
@@ -38,13 +38,13 @@ The objective is simple:
 
 From chromium depletion in stainless steels  
 to crystal structure intelligence and future DFT-assisted workflows,  
-Nominal Drift is being built as a scientific copilot that stays local.
+Nominal Drift is being built as a **scientific copilot that stays local**.
 
 ---
 
-Current capabilities
+## Current capabilities
 
-#Materials & corrosion workflows
+### Materials & corrosion workflows
 
 - 1D Fick diffusion engine (**Crank–Nicolson**)
 - chromium / carbon / nitrogen diffusion workflows
@@ -56,7 +56,7 @@ Current capabilities
 - experiment memory and comparison database
 - CLI and GUI orchestration
 
-Crystal intelligence lane *(active development)*
+### Crystal intelligence lane *(active development)*
 
 - `MP-20`
 - `MPTS-52`
@@ -70,7 +70,7 @@ Crystal intelligence lane *(active development)*
 
 ---
 
-Grounded in
+## Grounded in
 
 Nominal Drift is built on a combination of:
 
@@ -80,23 +80,23 @@ Nominal Drift is built on a combination of:
 - experimentally validated workflows
 - crystal dataset ecosystems
 
-Chromium diffusion *(substitutional)*
+### Chromium diffusion *(substitutional)*
 
 Primary reference currently used:
 
-Perkins, Padgett & Tunali (1973)  
-Tracer diffusion of Fe and Cr in Fe-17 wt% Cr-12 wt% Ni austenitic alloy
-Metallurgical Transactions*, 4(12), 2535–2540  
+**Perkins, Padgett & Tunali (1973)**  
+*Tracer diffusion of Fe and Cr in Fe-17 wt% Cr-12 wt% Ni austenitic alloy*  
+*Metallurgical Transactions*, 4(12), 2535–2540  
 DOI: 10.1007/BF02644258
 
 Canonical values currently used:
 
-- D₀ = 3.6 × 10⁻⁴ m²/s
-- Q = 272 kJ/mol**
+- **D₀ = 3.6 × 10⁻⁴ m²/s**
+- **Q = 272 kJ/mol**
 
 This remains the primary reference for Cr transport in the 18-8 / 316L composition space.
 
-Carbon diffusion *(interstitial)*
+### Carbon diffusion *(interstitial)*
 
 Grounded in:
 
@@ -104,7 +104,7 @@ Grounded in:
 - Goldschmidt (1967)
 - Smith (1990)
 
-Nitrogen diffusion
+### Nitrogen diffusion
 
 Grounded in:
 
@@ -112,33 +112,33 @@ Grounded in:
 - Grabke (1996)
 - Frisk (1991)
 
-Numerical foundation
+### Numerical foundation
 
 The transport layer is built on:
 
-- Fick’s Second Law
-- Arrhenius diffusion formalism
-- Crank–Nicolson finite difference solver
+- **Fick’s Second Law**
+- **Arrhenius diffusion formalism**
+- **Crank–Nicolson finite difference solver**
 
 Validated against:
 
-- Crank, The Mathematics of Diffusion (1975)
+- Crank, *The Mathematics of Diffusion* (1975)
 - Borg & Dienes (1988)
 
 ---
 
-Crystal lane references
+## Crystal lane references
 
 The crystal intelligence lane is currently being shaped around:
 
-- DiffCSP 
+- **DiffCSP**  
   crystal structure prediction by joint equivariant diffusion
 
-- matbench-genmetrics
+- **matbench-genmetrics**  
   generative crystal benchmarking  
   (validity, coverage, novelty, uniqueness)
 
-- pymatgen
+- **pymatgen**  
   structure parsing, CIF workflows, and crystallographic utilities
 
 This lane is intended to evolve into:
@@ -149,7 +149,7 @@ This lane is intended to evolve into:
 
 ---
 
-Architecture
+## Architecture
 
 ```text
 Llama / Ollama
@@ -168,7 +168,7 @@ Llama / Ollama
 
 ---
 
-Vision
+## Vision
 
 A local scientific operating system for:
 
@@ -193,9 +193,9 @@ and receive physically grounded, inspectable answers.
 
 ---
 
-Status
+## Status
 
-Active development — validation + crystal integration sprint
+**Active development — validation + crystal integration sprint**
 
 Current focus:
 
@@ -209,7 +209,7 @@ Current focus:
 
 ---
 
-Philosophy
+## Philosophy
 
 This is not about replacing scientific judgement.
 
