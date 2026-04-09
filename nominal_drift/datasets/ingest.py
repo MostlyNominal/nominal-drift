@@ -1,12 +1,23 @@
 """
 nominal_drift.datasets.ingest
 ==============================
-End-to-end ingestion pipeline: raw CSV → CIF → pymatgen → CrystalRecord
-→ structures.jsonl + manifest.json.
+End-to-end ingestion pipeline for all Lane B datasets.
 
-This module is the single entry point for converting raw downloaded files
-into the normalised Lane B format.  It is resilient: rows that fail CIF
-parsing are counted and reported rather than crashing the whole run.
+Two ingestion paths are supported:
+
+  CSV path (perov-5, mp-20, carbon-24):
+    raw CSV → CIF string → pymatgen Structure → CrystalRecord → JSONL
+
+  MPTimeSplit path (mpts-52):
+    figshare snapshot → MPTimeSplit.load() → pymatgen Structure
+    → CrystalRecord → JSONL
+    Uses the mp_time_split_bridge module to produce canonical temporal
+    train/test splits (the final get_test_data() split is used for the
+    "split" field; fold membership is stored in properties).
+
+This module is the single entry point for converting raw sources into the
+normalised Lane B format.  It is resilient: rows/structures that fail
+conversion are counted and reported rather than crashing the whole run.
 
 Usage (programmatic)
 ---------------------
@@ -15,10 +26,15 @@ Usage (programmatic)
 >>> print(result)
 IngestResult(n_ok=18928, n_err=0, ...)
 
+>>> result = ingest_dataset("mpts-52")   # downloads from figshare if needed
+>>> print(result)
+IngestResult(mpts-52: ...)
+
 Usage (CLI)
 -----------
     python -m nominal_drift.datasets.ingest --name perov-5
-    python -m nominal_drift.datasets.ingest --name perov-5 --limit 100 --verbose
+    python -m nominal_drift.datasets.ingest --name mpts-52 --verbose
+    python -m nominal_drift.datasets.ingest --name perov-5 --limit 100
 
 Public API
 ----------
@@ -157,6 +173,13 @@ def ingest_dataset(
     if name not in DATASET_REGISTRY:
         raise KeyError(f"Unknown dataset: {name!r}")
 
+    # MPTS-52 uses a completely different ingestion path (figshare via mp-time-split)
+    if name == "mpts-52":
+        return ingest_mpts52_via_mp_time_split(
+            norm_base=norm_base,
+            verbose=verbose,
+        )
+
     info = DATASET_REGISTRY[name]
     raw_base = Path(raw_base) if raw_base else _RAW_BASE_DEFAULT
     norm_base = Path(norm_base) if norm_base else _NORM_BASE_DEFAULT
@@ -220,6 +243,92 @@ def ingest_dataset(
         elapsed_s=elapsed,
         output_dir=norm_dir,
         error_samples=error_samples,
+    )
+
+
+def ingest_mpts52_via_mp_time_split(
+    norm_base: str | Path | None = None,
+    save_dir: str | Path | None = None,
+    dummy: bool = False,
+    force_download: bool = False,
+    verbose: bool = False,
+) -> IngestResult:
+    """Ingest MPTS-52 using the mp-time-split figshare snapshot.
+
+    Unlike the CSV-based datasets, MPTS-52 is downloaded via the
+    ``MPTimeSplit.load()`` method which fetches a compressed JSON snapshot
+    from figshare.  The final temporal test split is used to assign
+    ``split="train"`` / ``split="test"`` labels; fold membership is stored
+    in ``properties["mp_id"]`` / ``properties["energy_above_hull"]``.
+
+    Parameters
+    ----------
+    norm_base : str | Path | None
+        Root of normalised output directory (default: ``data/datasets/normalized``).
+    save_dir : str | Path | None
+        Cache directory for the figshare snapshot.  Defaults to
+        ``~/.data_home`` (managed by mp-time-split).
+    dummy : bool
+        Use the tiny dummy snapshot for offline testing.
+    force_download : bool
+        Re-download even if the snapshot is cached.
+    verbose : bool
+        Print progress to stdout.
+
+    Returns
+    -------
+    IngestResult
+    """
+    import time
+    from nominal_drift.datasets.mp_time_split_bridge import (
+        load_mpts52, mpt_to_crystal_records,
+    )
+    from nominal_drift.datasets.adapters import normalise_records
+
+    norm_base = Path(norm_base) if norm_base else _NORM_BASE_DEFAULT
+    norm_dir = norm_base / "mpts-52"
+    t0 = time.monotonic()
+
+    if verbose:
+        print("  [mpts-52] Loading MPTimeSplit snapshot from figshare …")
+
+    try:
+        mpt = load_mpts52(save_dir=save_dir, dummy=dummy, force_download=force_download)
+    except Exception as exc:
+        elapsed = time.monotonic() - t0
+        return IngestResult(
+            dataset_name="mpts-52",
+            n_ok=0,
+            n_err=1,
+            n_total=0,
+            elapsed_s=elapsed,
+            output_dir=norm_dir,
+            error_samples=[f"MPTimeSplit load failed: {exc}"],
+        )
+
+    if verbose:
+        total = len(mpt.inputs)
+        print(f"  [mpts-52] Loaded {total:,} structures — converting to CrystalRecords …")
+
+    n_total = len(mpt.inputs)
+    records = mpt_to_crystal_records(mpt)
+    n_ok = len(records)
+    n_err = n_total - n_ok
+    elapsed = time.monotonic() - t0
+
+    if verbose:
+        print(f"  [mpts-52] {n_ok:,} ok / {n_err} err — writing to {norm_dir}")
+
+    if records:
+        normalise_records(records, str(norm_dir), "mpts-52")
+
+    return IngestResult(
+        dataset_name="mpts-52",
+        n_ok=n_ok,
+        n_err=n_err,
+        n_total=n_total,
+        elapsed_s=elapsed,
+        output_dir=norm_dir,
     )
 
 

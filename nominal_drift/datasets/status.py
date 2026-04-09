@@ -125,26 +125,30 @@ DATASET_REGISTRY: dict[str, DatasetInfo] = {
     "mpts-52": DatasetInfo(
         name="mpts-52",
         description=(
-            "~40,000 Materials Project structures (MPTS benchmark). "
-            "Train split only; val/test are optional."
+            "~40,000 Materials Project structures with temporal train/val/test "
+            "splits (MPTS-52 / MPTimeSplit benchmark). Structures sorted by "
+            "earliest literature publication year; 5 × TimeSeriesSplit CV folds "
+            "plus a held-out test split. Up to 52 atoms per cell. "
+            "Downloaded automatically from figshare via mp-time-split."
         ),
-        source_url=(
-            "https://raw.githubusercontent.com/ml-evs/mpts/master/data/mpts_52/"
-        ),
-        expected_raw_files=("train.csv",),
+        source_url="https://figshare.com/articles/dataset/Materials_Project_Time_Split_Data/19991516",
+        expected_raw_files=(),   # no CSV files — figshare snapshot via mp-time-split
         license="Creative Commons (Materials Project data)",
         citation=(
-            "Evans, M.L. et al. Developments and applications of the "
-            "OPTIMADE API for materials science. Digital Discovery 2024."
+            "Baird, S.G. et al. Matbench Discovery and the MPTS-52 benchmark. "
+            "Figshare dataset: https://doi.org/10.6084/m9.figshare.19991516. "
+            "mp-time-split: https://github.com/sparks-baird/mp-time-split. "
+            "Materials Project: Jain, A. et al. APL Materials 2013."
         ),
         auto_downloadable=True,
         manual_instructions=(
-            "If auto-download fails, manually download from:\n"
-            "  https://raw.githubusercontent.com/ml-evs/mpts/master/data/mpts_52/train.csv\n"
-            "Place it at: data/datasets/raw/mpts-52/\n\n"
-            "Alternatively, clone the MPTS repo:\n"
-            "  git clone https://github.com/ml-evs/mpts.git\n"
-            "  cp mpts/data/mpts_52/train.csv data/datasets/raw/mpts-52/"
+            "MPTS-52 is downloaded automatically via mp-time-split from figshare.\n"
+            "Run the normalisation step in the Dataset page, or from the CLI:\n"
+            "  python -m nominal_drift.datasets.ingest --name mpts-52\n\n"
+            "This downloads ~150 MB from:\n"
+            f"  https://figshare.com/ndownloader/files/35592011\n\n"
+            "If the download fails, ensure mp-time-split is installed:\n"
+            "  pip install 'mp-time-split<0.2'"
         ),
     ),
 }
@@ -174,6 +178,11 @@ class DatasetStatus:
 
     @property
     def is_raw_complete(self) -> bool:
+        # Datasets with no expected raw files (e.g. MPTS-52 which uses a
+        # figshare snapshot via mp-time-split) are considered "raw complete"
+        # once they have been normalised (the snapshot is the canonical source).
+        if not self.info.expected_raw_files:
+            return self.is_normalised
         return len(self.raw_files_missing) == 0 and bool(self.raw_files_present)
 
     @property
@@ -188,6 +197,9 @@ class DatasetStatus:
     def download_status_label(self) -> str:
         if self.is_normalised:
             return f"✅ normalised ({self.norm_structure_count:,} structures)"
+        # Figshare/MPTimeSplit datasets have no CSV raw files
+        if not self.info.expected_raw_files:
+            return "❌ not downloaded — click Normalise to fetch from figshare"
         if self.is_raw_complete:
             return f"📥 raw present ({self.total_raw_rows:,} rows) — not normalised"
         if self.raw_files_present:

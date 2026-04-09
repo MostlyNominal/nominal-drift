@@ -105,9 +105,15 @@ class TestDatasetRegistry:
         for info in DATASET_REGISTRY.values():
             assert info.source_url.startswith("http")
 
-    def test_all_have_expected_raw_files(self):
-        for info in DATASET_REGISTRY.values():
+    def test_csv_datasets_have_expected_raw_files(self):
+        # CSV-based datasets must list their raw files; figshare-based (mpts-52) may have none
+        csv_datasets = {k: v for k, v in DATASET_REGISTRY.items() if k != "mpts-52"}
+        for info in csv_datasets.values():
             assert len(info.expected_raw_files) >= 1
+
+    def test_mpts52_has_no_raw_csv_files(self):
+        # mpts-52 uses figshare via mp-time-split — no CSV raw files expected
+        assert DATASET_REGISTRY["mpts-52"].expected_raw_files == ()
 
     def test_all_have_manual_instructions(self):
         for name, info in DATASET_REGISTRY.items():
@@ -117,9 +123,9 @@ class TestDatasetRegistry:
         info = DATASET_REGISTRY["perov-5"]
         assert set(info.expected_raw_files) == {"train.csv", "val.csv", "test.csv"}
 
-    def test_mpts52_only_needs_train(self):
+    def test_mpts52_source_url_is_figshare(self):
         info = DATASET_REGISTRY["mpts-52"]
-        assert "train.csv" in info.expected_raw_files
+        assert "figshare" in info.source_url
 
 
 # ---------------------------------------------------------------------------

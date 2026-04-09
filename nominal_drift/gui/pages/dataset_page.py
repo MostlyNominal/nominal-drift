@@ -73,7 +73,9 @@ def _run_normalize(name: str) -> tuple[bool, str]:
         from nominal_drift.datasets.status import get_dataset_status
 
         status = get_dataset_status(name, raw_base=_RAW_BASE, norm_base=_NORM_BASE)
-        if not status.is_raw_complete:
+        # CSV-based datasets require raw files first; figshare datasets (mpts-52)
+        # download automatically during normalisation so raw_complete is not needed
+        if status.info.expected_raw_files and not status.is_raw_complete:
             return False, "Raw files are not complete — download first."
 
         result = ingest_dataset(
