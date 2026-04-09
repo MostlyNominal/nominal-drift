@@ -42,17 +42,43 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 #: Sums outside [100 - tol, 100 + tol] indicate a likely data-entry error.
 COMPOSITION_SUM_TOLERANCE_WTP: float = 2.0
 
-#: Elements that must be present in any alloy composition accepted by
-#: Track 1 metallurgy workflows.  Both are required for Fick-diffusion
-#: and sensitization calculations.
-REQUIRED_ELEMENTS: frozenset[str] = frozenset({"Fe", "Cr"})
+#: Elements that must be present in steel / ferrous compositions.
+#: For non-ferrous material systems the required-element check is
+#: relaxed — only a non-empty composition is enforced.
+REQUIRED_ELEMENTS_FERROUS: frozenset[str] = frozenset({"Fe", "Cr"})
 
-#: Recognised alloy-matrix identifiers.  Constraining this field prevents
-#: silent errors when an unsupported matrix is forwarded to a module that
-#: uses matrix-specific Arrhenius constants.
-#: "unknown" is accepted so that partially characterised samples can be
-#: ingested into the knowledge layer for later classification.
-AlloyMatrix = Literal["austenite", "ferrite", "duplex", "martensite", "unknown"]
+#: Backward-compatible alias (used in existing tests).
+REQUIRED_ELEMENTS: frozenset[str] = REQUIRED_ELEMENTS_FERROUS
+
+#: Matrix identifiers that are considered ferrous (require Fe + Cr).
+_FERROUS_MATRICES: frozenset[str] = frozenset({
+    "austenite", "ferrite", "duplex", "martensite",
+})
+
+#: Recognised alloy-matrix identifiers.
+#:
+#: The matrix field serves two purposes:
+#:   1. Crystallographic structure class (fcc, bcc, hcp, etc.)
+#:   2. Material-family hint for downstream modules
+#:
+#: A cleaner split (separate crystal_system + material_family fields)
+#: is a future refactor target.  For now, a single flat Literal covers
+#: both use-cases and avoids breaking the frozen-model contract.
+#:
+#: Backward-compatible steel values are preserved.  New values use
+#: lowercase for consistency.
+AlloyMatrix = Literal[
+    # --- Ferrous / steel (backward-compatible) ---
+    "austenite", "ferrite", "duplex", "martensite",
+    # --- Generic crystallographic classes ---
+    "fcc", "bcc", "hcp",
+    # --- Material-family specific ---
+    "al_fcc", "ni_fcc", "cu_fcc", "co_hcp", "ti_hcp", "ti_bcc",
+    # --- Ceramics / functional materials ---
+    "perovskite", "oxide", "carbon",
+    # --- Catch-all ---
+    "generic", "unknown",
+]
 
 
 # ---------------------------------------------------------------------------
@@ -70,12 +96,14 @@ class AlloyComposition(BaseModel):
     alloy_matrix : AlloyMatrix
         Crystal / microstructural matrix type.  Governs which Arrhenius
         constants and phase-stability data are loaded by scientific modules.
-        Accepted values: "austenite", "ferrite", "duplex", "martensite",
-        "unknown".
+        Ferrous: "austenite", "ferrite", "duplex", "martensite".
+        Non-ferrous: "ni_fcc", "al_fcc", "ti_hcp", "cu_fcc", etc.
+        General: "generic", "unknown".
     composition_wt_pct : dict[str, float]
         Elemental composition in weight percent.  Keys are element symbols
         (case-sensitive, e.g. "Cr" not "cr").  Values must be non-negative.
-        Must contain at least "Fe" and "Cr".
+        Ferrous matrices require "Fe" and "Cr"; non-ferrous only require
+        a non-empty dict.
         The sum must lie within COMPOSITION_SUM_TOLERANCE_WTP of 100 wt%.
     elemental_analysis_method : str | None
         Technique used to measure the composition, e.g. "EDS", "WDS",
@@ -120,7 +148,8 @@ class AlloyComposition(BaseModel):
         ...,
         description=(
             "Crystal / microstructural matrix type.  Governs Arrhenius "
-            "constant selection and phase-stability lookups."
+            "constant selection and phase-stability lookups.  "
+            "Ferrous, Ni-base, Al, Ti, oxide, and custom matrices supported."
         ),
     )
 
@@ -128,7 +157,8 @@ class AlloyComposition(BaseModel):
         ...,
         description=(
             "Elemental composition in weight percent.  Keys are element "
-            "symbols (case-sensitive).  Must contain 'Fe' and 'Cr'."
+            "symbols (case-sensitive).  Ferrous matrices require 'Fe' and "
+            "'Cr'; non-ferrous only require a non-empty dict."
         ),
     )
 
@@ -209,14 +239,16 @@ class AlloyComposition(BaseModel):
         """
         comp = self.composition_wt_pct
 
-        # 1 — Required elements
-        missing = REQUIRED_ELEMENTS - comp.keys()
-        if missing:
-            raise ValueError(
-                f"composition_wt_pct is missing required element(s): "
-                f"{sorted(missing)}.  Both 'Fe' and 'Cr' must be present "
-                f"for Track 1 metallurgy workflows."
-            )
+        # 1 — Required elements (ferrous matrices require Fe + Cr;
+        #     non-ferrous only require a non-empty composition)
+        if self.alloy_matrix in _FERROUS_MATRICES:
+            missing = REQUIRED_ELEMENTS_FERROUS - comp.keys()
+            if missing:
+                raise ValueError(
+                    f"composition_wt_pct is missing required element(s): "
+                    f"{sorted(missing)}.  Both 'Fe' and 'Cr' must be present "
+                    f"for ferrous matrix '{self.alloy_matrix}'."
+                )
 
         # 2 — Sum-to-100 check
         total = sum(comp.values())

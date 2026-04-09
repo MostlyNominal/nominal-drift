@@ -6,10 +6,12 @@ tracks.  Deliberately separated from the calculation modules so that plots
 and animations can be regenerated with different styling without rerunning
 expensive simulations.
 
-Planned modules
----------------
-profile_plotter   : Static concentration-profile plots (matplotlib PNG/SVG)
-animator          : Time-evolving diffusion animations (MP4 / GIF)
-heatmap_renderer  : T-t-risk heatmaps
-ttt_renderer      : TTT/CCT-style interactive diagrams (Plotly, Phase 2)
+Modules
+-------
+profile_plotter          : Static concentration-profile plots (matplotlib PNG/SVG)
+animator                 : Time-evolving engineering diffusion animations (GIF)
+mechanism_animator       : Mechanism-inspired schematic animation (GIF)
+microstructure_animator  : Microstructure-inspired particle scene animation (GIF)
+species_styles           : Generic element styling (colour, radius, priority)
+risk_map                 : TTT/CCT-style sensitization risk heatmaps
 """

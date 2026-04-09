@@ -1,5 +1,5 @@
 """
-Nominal Drift GUI — Local browser-based engineering workbench.
+Nominal Drift GUI — Local browser-based materials engineering workbench.
 Run with: streamlit run nominal_drift/gui/app.py
 """
 import streamlit as st
@@ -20,9 +20,8 @@ def main():
         "Navigate",
         [
             "🔬 Diffusion",
-            "⚠️ Sensitization",
-            "🌡️ Heat Treatment",
-            "🎬 Mechanism Animation",
+            "⚠️ Mechanism Assessment",
+            "🎬 Animation Studio",
             "📦 Dataset Import",
             "📄 Reports",
             "🗄️ Experiment Database",
@@ -30,7 +29,7 @@ def main():
         ],
     )
     st.sidebar.markdown("---")
-    st.sidebar.caption("Nominal Drift v0.1.0 · Local · No cloud")
+    st.sidebar.caption("Nominal Drift v0.2.0 · Local · No cloud")
 
     # Route to page
     from nominal_drift.gui.pages import (
@@ -45,9 +44,8 @@ def main():
 
     route = {
         "🔬 Diffusion": diffusion_page.render,
-        "⚠️ Sensitization": sensitization_page.render,
-        "🌡️ Heat Treatment": diffusion_page.render,
-        "🎬 Mechanism Animation": animation_page.render,
+        "⚠️ Mechanism Assessment": sensitization_page.render,
+        "🎬 Animation Studio": animation_page.render,
         "📦 Dataset Import": dataset_page.render,
         "📄 Reports": reports_page.render,
         "🗄️ Experiment Database": experiment_db_page.render,
