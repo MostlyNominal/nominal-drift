@@ -1,119 +1,151 @@
 Nominal Drift
 
-Where diffusion becomes discovery.
+Where failed assumptions become working systems.
 
-Nominal Drift is a local scientific AI workstation for materials science, corrosion, diffusion physics and crystal intelligence workflows.
+Nominal Drift is a **local-first scientific AI workstation for materials science, corrosion, diffusion physics, and crystal intelligence.
 
-Built as a hybrid system, it combines:
+It is being built as a hybrid system where:
 
-* LLM reasoning** for scientific dialogue and workflow orchestration
-* deterministic physics engines for trusted calculations
-* mechanism-aware visualisation for microstructure and diffusion behaviour
-* experiment memory + retrieval for validation and comparison
-* future crystal / DFT dataset workflows for structure-aware materials intelligence
+- LLM reasoning** drives scientific dialogue and workflow orchestration
+- deterministic physics engines generate trusted numerical results
+- mechanism-aware visualisation makes diffusion and microstructural evolution visible
+- experiment memory and retrieval preserve validation history
+- crystal / CIF / DFT-ready data lanes support structure-aware workflows
 
-This is **not a generic chatbot**.
+This is not a generic chatbot.
 
-The language model is the reasoning layer.
-**The science lives in the tools.**
-
-Every numerical result is generated through explicit modules:
-
-* diffusion solvers
-* sensitization models
-* heat-treatment workflows
-* experiment databases
-* dataset pipelines
-* report generators
-
-The goal is simple:
-
-> Ask scientific questions in natural language and receive physically grounded outputs.
-
-From chromium depletion in stainless steels to future crystal diffusion and DFT-assisted workflows, Nominal Drift is being built as a local-first scientific copilot.
+The model reasons.  
+The science lives in the tools.
 
 ---
 
-Current Capabilities
+What it does
 
-Materials & Corrosion Workflows
+Every numerical result is produced through explicit scientific modules:
 
-* 1D Fick diffusion engine (Crank–Nicolson)
-* chromium / carbon / nitrogen diffusion workflows
-* sensitization and depletion studies
-* engineering narration via local LLM
-* static and animated visual outputs
-* experiment database
-* CLI and GUI orchestration (in progress)
+- diffusion solvers
+- sensitization models
+- heat-treatment workflows
+- experiment databases
+- crystal dataset pipelines
+- reporting and narration tools
+- mechanism animation engines
 
-Crystal Intelligence Lane (Phase 2 / in progress)
+The objective is simple:
 
-* MP-20
-* MPTS-52
-* Perov-5
-* Carbon-24
-* CIF-based public crystal repositories
-* normalization and indexing pipelines
+> Ask scientific questions in natural language  
+> and receive physically grounded outputs.
+
+From chromium depletion in stainless steels  
+to crystal structure intelligence and future DFT-assisted workflows,  
+Nominal Drift is being built as a scientific copilot that stays local.
 
 ---
 
-Grounded In
+Current capabilities
 
-Nominal Drift is built on experimental diffusion data, classical transport theory and corrosion literature.
+#Materials & corrosion workflows
 
-The current diffusion engine uses literature-validated Arrhenius constants for substitutional and interstitial diffusion in Fe–Cr–Ni austenitic systems.
+- 1D Fick diffusion engine (**Crank–Nicolson**)
+- chromium / carbon / nitrogen diffusion workflows
+- sensitization and depletion studies
+- heat-treatment mechanism studies
+- local LLM scientific narration
+- static engineering plots
+- microstructure-style mechanism animations
+- experiment memory and comparison database
+- CLI and GUI orchestration
 
-Chromium diffusion (substitutional)
+Crystal intelligence lane *(active development)*
+
+- `MP-20`
+- `MPTS-52`
+- `Perov-5`
+- `Carbon-24`
+- CIF-based public crystal repositories
+- `pymatgen`-driven structure parsing
+- normalization + indexing pipelines
+- future `DiffCSP`-style structure workflows
+- `matbench-genmetrics` evaluation bridge
+
+---
+
+Grounded in
+
+Nominal Drift is built on a combination of:
+
+- literature-grounded diffusion constants
+- classical transport theory
+- corrosion science
+- experimentally validated workflows
+- crystal dataset ecosystems
+
+Chromium diffusion *(substitutional)*
 
 Primary reference currently used:
 
-* Perkins, Padgett & Tunali (1973)
-  *Tracer diffusion of Fe and Cr in Fe-17 wt% Cr-12 wt% Ni austenitic alloy
-  *Metallurgical Transactions, 4(12), 2535–2540
-  DOI: 10.1007/BF02644258
+Perkins, Padgett & Tunali (1973)  
+Tracer diffusion of Fe and Cr in Fe-17 wt% Cr-12 wt% Ni austenitic alloy
+Metallurgical Transactions*, 4(12), 2535–2540  
+DOI: 10.1007/BF02644258
 
-Canonical values used in the model:
+Canonical values currently used:
 
-* D₀ = 3.6 × 10⁻⁴ m²/s**
-* Q = 272 kJ/mol**
+- D₀ = 3.6 × 10⁻⁴ m²/s
+- Q = 272 kJ/mol**
 
-This remains the main diffusion reference for Cr transport in the 18-8 / 316L composition space.
+This remains the primary reference for Cr transport in the 18-8 / 316L composition space.
 
-Carbon diffusion (interstitial)
+Carbon diffusion *(interstitial)*
 
-Current C diffusivity constants are built from:
+Grounded in:
 
-* Tibbetts (1980)
-* Goldschmidt (1967)
-* Smith (1990)
-
-These support sensitization and grain-boundary depletion workflows.
+- Tibbetts (1980)
+- Goldschmidt (1967)
+- Smith (1990)
 
 Nitrogen diffusion
 
-Nitrogen diffusion constants currently reference:
+Grounded in:
 
-* Jack (1951)
-* Grabke (1996)
-* Frisk (1991)
-
-Used for future nitride-driven HT and corrosion workflows.
+- Jack (1951)
+- Grabke (1996)
+- Frisk (1991)
 
 Numerical foundation
 
-The transport solver is built on:
+The transport layer is built on:
 
-* Fick’s Second Law
-* Arrhenius diffusion formalism
-* Crank–Nicolson finite difference method
+- Fick’s Second Law
+- Arrhenius diffusion formalism
+- Crank–Nicolson finite difference solver
 
 Validated against:
 
-* Crank, The Mathematics of Diffusion (1975)
-* Borg & Dienes (1988)
+- Crank, The Mathematics of Diffusion (1975)
+- Borg & Dienes (1988)
 
-This project is intentionally developed as a living scientific workspace —
-part validated physics, part evolving toolchain, part experimental notebook.
+---
+
+Crystal lane references
+
+The crystal intelligence lane is currently being shaped around:
+
+- DiffCSP 
+  crystal structure prediction by joint equivariant diffusion
+
+- matbench-genmetrics
+  generative crystal benchmarking  
+  (validity, coverage, novelty, uniqueness)
+
+- pymatgen
+  structure parsing, CIF workflows, and crystallographic utilities
+
+This lane is intended to evolve into:
+
+> crystal-aware diffusion  
+> structure-guided materials discovery  
+> DFT-ready local workflows
 
 ---
 
@@ -121,15 +153,17 @@ Architecture
 
 ```text
 Llama / Ollama
-      ↓
- Tool Router
-      ↓
- Scientific Modules
-      ├── diffusion_engine
-      ├── visualization
-      ├── experiment_store
-      ├── datasets
-      └── reporting
+       ↓
+ Scientific Router
+       ↓
+ Core Toolchain
+       ├── diffusion_engine
+       ├── mechanism_animator
+       ├── experiment_store
+       ├── crystal_datasets
+       ├── pymatgen_structure_lane
+       ├── reporting
+       └── retrieval
 ```
 
 ---
@@ -138,35 +172,40 @@ Vision
 
 A local scientific operating system for:
 
-* materials discovery
-* failure analysis
-* corrosion modelling
-* heat-treatment optimization
-* diffusion mechanism visualization
-* future DFT / crystal workflows
+- materials discovery
+- failure analysis
+- corrosion modelling
+- heat-treatment optimisation
+- grain evolution studies
+- diffusion pathway visualisation
+- crystal structure workflows
+- future DFT and CSP integration
 
 The long-term vision is a system where you can ask:
 
 > Why did this alloy fail after this heat treatment?
+
 > How deep is chromium depletion after 700°C for 1 hour?
+
 > Can this crystal structure support fast diffusion pathways?
 
-and receive physically grounded answers.
+and receive physically grounded, inspectable answers.
 
 ---
 
-## Status
+Status
 
-Active development — currently in validation sprint.
+Active development — validation + crystal integration sprint
 
 Current focus:
 
-* workflow validation
-* model calibration
-* literature grounding
-* dataset integration
-* GUI / local launcher
-* DFT-ready crystal pipeline
+- workflow validation
+- literature calibration
+- dataset ingestion
+- `pymatgen` structure workflows
+- GUI stabilization
+- DiffCSP / crystal data alignment
+- evaluation pipeline integration
 
 ---
 
@@ -174,7 +213,18 @@ Philosophy
 
 This is not about replacing scientific judgement.
 
-It is about building a system that helps us think faster, test ideas earlier, and validate mechanisms better.
+It is about building a system that helps us:
+
+- think faster
+- test earlier
+- validate mechanisms sooner
+- preserve experimental reasoning
+- learn from wrong assumptions
+
+A scientific workspace.  
+A lab notebook.  
+A reasoning engine.
 
 Mostly nominal.
+
 Until it drifts into discovery.
