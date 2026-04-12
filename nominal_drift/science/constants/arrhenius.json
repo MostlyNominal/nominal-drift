@@ -1,0 +1,37 @@
+{
+  "_schema_version": "1.0",
+  "_description": "Arrhenius diffusion constants for solute elements in austenitic Fe-Cr-Ni matrix (e.g. 304/316L stainless steel). D(T) = D0 * exp(-Qd / (R * T)), where T is in Kelvin and R = 8.314 J/(mol*K).",
+  "_units": {
+    "D0": "m^2/s",
+    "Qd": "J/mol"
+  },
+  "_references": {
+    "Cr_in_austenite": "Swalin & Martin (1956); Perkins et al. (1973); Rehn & Okamoto (1983). Values compiled in: Callister & Rethwisch, Materials Science and Engineering, 10th ed., Appendix B; and Borg & Dienes, An Introduction to Solid State Diffusion, Academic Press (1988).",
+    "C_in_austenite": "Goldschmidt (1967); Tibbetts (1980). Primary reference: Smith (1990), Foundations of Materials Science and Engineering. Values consistent with those used in DICTRA/ThermoCalc austenite mobility databases.",
+    "N_in_austenite": "Frisk (1991) CALPHAD thermodynamic assessment; Jack (1951) experimental diffusivity in austenite. Cited in: Grabke, H.J., ISIJ International 36 (1996) 777-786."
+  },
+  "Cr": {
+    "element": "Chromium",
+    "matrix": "austenite_FeCrNi",
+    "D0": 3.6e-4,
+    "Qd": 272000,
+    "validity_range_C": [550, 1050],
+    "notes": "Lattice (bulk) diffusion of Cr in austenitic Fe-Cr-Ni. This is the rate-limiting transport mechanism for grain-boundary Cr depletion in the sensitization temperature range (450-850 C). Grain-boundary diffusion of Cr is 4-6 orders of magnitude faster but operates over a much narrower zone (nm-scale); Sprint 1 models only lattice diffusion. The D0 and Qd values represent mean literature values for 18Cr-8Ni austenite and are appropriate for scoping calculations on 304 and 316L grades."
+  },
+  "C": {
+    "element": "Carbon",
+    "matrix": "austenite_FeCrNi",
+    "D0": 5.0e-5,
+    "Qd": 142000,
+    "validity_range_C": [500, 1100],
+    "notes": "Interstitial diffusion of carbon in austenite. Carbon diffuses ~10^6 times faster than Cr in the sensitization range, which is the physical basis for the fast-precipitation approximation used in Sprint 1: carbon reaches grain boundaries essentially instantly compared to the Cr depletion timescale, justifying the Dirichlet sink model at the grain boundary. The D0 value corresponds to Fe-18Cr-8Ni austenite; interstitial diffusivity is weakly composition-dependent for typical stainless steel grades."
+  },
+  "N": {
+    "element": "Nitrogen",
+    "matrix": "austenite_FeCrNi",
+    "D0": 9.1e-5,
+    "Qd": 168000,
+    "validity_range_C": [500, 1100],
+    "notes": "Interstitial diffusion of nitrogen in austenite. Nitrogen can drive Cr2N precipitation at grain boundaries in nitrogen-alloyed stainless steels (e.g. 316LN, duplex grades). The depletion mechanism is analogous to the carbon/M23C6 mechanism but occurs preferentially at lower temperatures in some grades. Sprint 1 includes N constants for future use; the showcase workflow uses Cr diffusion only. N diffusivity is approximately 2-5x slower than C in austenite, consistent with the larger atomic radius of N compared to C."
+  }
+}

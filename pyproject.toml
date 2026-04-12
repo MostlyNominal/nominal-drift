@@ -1,0 +1,103 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# ---------------------------------------------------------------------------
+# Project metadata
+# ---------------------------------------------------------------------------
+[project]
+name = "nominal-drift"
+version = "0.1.0"
+description = "Fully local scientific AI workbench for materials engineering: deterministic diffusion / sensitization modelling (Track 1) and crystal-structure generation / scientific AI benchmarking (Track 2)."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+
+# ---------------------------------------------------------------------------
+# Core runtime dependencies
+# All are required for any workflow.  Optional groups add capabilities.
+# ---------------------------------------------------------------------------
+dependencies = [
+    "pydantic>=2.5",       # schema validation for all inputs and outputs
+    "numpy>=1.26",         # array operations; diffusion grids (Day 3+)
+    "scipy>=1.12",         # solve_banded for Crank-Nicolson solver (Day 3+)
+    "matplotlib>=3.8",     # static plots + FuncAnimation (Day 5+)
+    "Pillow>=10.0",        # GIF fallback for animations (Day 6+)
+    "sqlalchemy>=2.0",     # ORM for SQLite experiment store (Day 7+)
+    "alembic>=1.13",       # schema migrations for experiments.db (Day 7+)
+    "typer>=0.12",         # CLI framework (Day 9+)
+    "rich>=13.0",          # terminal progress bars and coloured output
+    "requests>=2.31",      # Ollama REST API client (Day 2+)
+    "Jinja2>=3.1",         # prompt template rendering (Day 8+)
+    "pyyaml>=6.0",         # config.yaml loading
+]
+
+# ---------------------------------------------------------------------------
+# Optional dependency groups
+# Install with: pip install -e ".[group]"
+# ---------------------------------------------------------------------------
+[project.optional-dependencies]
+
+# Retrieval-augmented knowledge layer (Phase 1b)
+rag = [
+    "chromadb>=0.4",
+    "sentence-transformers>=2.7",
+]
+
+# matbench-genmetrics benchmarking adapter (Track 2, Phase 2)
+bench = [
+    "matbench-genmetrics",
+]
+
+# Development and testing
+dev = [
+    "pytest>=8.0",
+    "pytest-mock>=3.12",
+    "ruff>=0.4",
+    "mypy>=1.9",
+]
+
+# Full installation (all optional groups)
+all = [
+    "nominal-drift[rag,bench,dev]",
+]
+
+# ---------------------------------------------------------------------------
+# CLI entry point
+# ---------------------------------------------------------------------------
+[project.scripts]
+nominal-drift = "nominal_drift.cli.main:app"
+
+# ---------------------------------------------------------------------------
+# Package discovery
+# ---------------------------------------------------------------------------
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["nominal_drift*"]
+
+# ---------------------------------------------------------------------------
+# Ruff linter configuration
+# ---------------------------------------------------------------------------
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP"]
+ignore = ["E501"]   # line-length handled separately
+
+# ---------------------------------------------------------------------------
+# Mypy type-checker configuration
+# ---------------------------------------------------------------------------
+[tool.mypy]
+python_version = "3.11"
+plugins = ["pydantic.mypy"]
+strict = false
+ignore_missing_imports = true
+
+# ---------------------------------------------------------------------------
+# Pytest configuration
+# ---------------------------------------------------------------------------
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --tb=short"
